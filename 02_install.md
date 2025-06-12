@@ -1,16 +1,5 @@
 # 💾 Arch Linux Installation – Phase 2: Installing the Base System
 
-## 📁 Mount the Filesystems
-
-```bash
-mount /dev/dropped/root /mnt
-mkdir -p /mnt/boot
-mount /dev/nvme0n1p1 /mnt/boot
-mkdir -p /mnt/home
-mount /dev/dropped/home /mnt/home
-swapon /dev/dropped/swap
-```
-
 ## 📦 Install Base System
 
 ```bash
