@@ -42,6 +42,20 @@ initrd  /initramfs-linux.img
 options cryptdevice=UUID=<UUID>:cryptroot root=/dev/mapper/dropped-root
 ```
 
+```ini
+title   Dropped Linux
+linux   /vmlinuz-linux
+initrd  /intel-ucode.img
+initrd  /initramfs-linux.img
+options cryptdevice=UUID=s2a18-pPRv-s1hL-opfo-MfAX-7KKo-jJRS1X:cryptroot root=/dev/mapper/dropped-root rw
+```
+
+That will:
+	•	Unlock your LUKS-encrypted partition at boot (/dev/nvme1n1p2).
+	•	Map it to /dev/mapper/cryptroot.
+	•	Mount the LVM root volume at /dev/mapper/dropped-root.
+
+
 ```bash
 nvim /boot/loader/loader.conf
 ```
