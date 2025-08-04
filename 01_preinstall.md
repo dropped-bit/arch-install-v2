@@ -82,3 +82,59 @@ mkdir -p /mnt/home
 mount /dev/dropped/home /mnt/home
 swapon /dev/dropped/swap
 ```
+
+or with single logical volume with btrfs sub volumes 
+Here’s a Markdown block you can add to your guide as an alternative to using a logical volume for /home. This version keeps the encrypted LVM for swap and root, but uses a Btrfs subvolume for /home instead of a separate LV.
+
+⸻
+
+🧩 Optional: Use a Btrfs Subvolume for /home Instead of an LVM Volume
+
+💡 Use this if you prefer subvolumes over separate LVM logical volumes. It simplifies snapshotting and space management.
+
+🧱 LVM Layout (No LVM home Volume)
+
+lvcreate -L 66G -n swap dropped
+lvcreate -l +100%FREE -n root dropped
+
+🗂️ Format Root with Btrfs and Create Subvolumes
+
+mkfs.btrfs -L root /dev/dropped/root
+mount /dev/dropped/root /mnt
+
+# Create subvolumes
+btrfs subvolume create /mnt/@
+btrfs subvolume create /mnt/@home
+
+# Unmount temporary mount
+umount /mnt
+
+📁 Mount the Subvolumes
+
+# Mount root subvolume
+mount -o subvol=@ /dev/dropped/root /mnt
+
+# Mount boot
+mkdir -p /mnt/boot
+mount /dev/nvme0n1p1 /mnt/boot
+
+# Mount home subvolume
+mkdir -p /mnt/home
+mount -o subvol=@home /dev/dropped/root /mnt/home
+
+# Enable swap
+mkswap /dev/dropped/swap
+swapon /dev/dropped/swap
+
+📜 Add to /etc/fstab Later
+
+You’ll need to add something like this during configuration:
+
+/dev/dropped/root  /      btrfs  rw,relatime,subvol=@      0 1
+/dev/dropped/root  /home  btrfs  rw,relatime,subvol=@home  0 2
+
+
+⸻
+
+Let me know if you’d like this embedded directly in the flow of your current guide (rather than as an optional section).
+
