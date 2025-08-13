@@ -3,7 +3,7 @@
 ## 📦 Install Base System
 
 ```bash
-pacstrap -K /mnt base base-devel linux linux-firmware git neovim lvm2 grub efibootmgr zsh xdg-user-dirs networkmanager intel-ucode openssh
+pacstrap -K /mnt base base-devel linux linux-firmware git neovim lvm2 grub efibootmgr zsh xdg-user-dirs networkmanager intel-ucode openssh btrfs-progs
 ```
 
 ## 🧾 Generate `fstab`
